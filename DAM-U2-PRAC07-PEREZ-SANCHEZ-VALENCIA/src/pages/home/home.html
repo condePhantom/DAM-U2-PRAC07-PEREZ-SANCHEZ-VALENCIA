@@ -1,14 +1,116 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+     Usuarios
     </ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
+<ion-list>
+  <ion-item>
+    <ion-label color="primary">Elige una opción</ion-label>
+    <ion-select (ionChange)="seleccionar()" [(ngModel)]="place">
+     <ion-option values= "Crear">Crear</ion-option>
+     <ion-option values= "Actualizar">Actualizar</ion-option>
+     <ion-option values= "Buscar">Buscar</ion-option>
+     <ion-option values= "Eliminar">Eliminar</ion-option>
+    </ion-select>
+   </ion-item> 
+</ion-list>
+<form [formGroup] = "formulario">
+<ion-list>
+<ion-item>
+  <ion-label floating color= "primary">ID Usuario</ion-label>
+  <ion-input formControlName="usuarioID" type="number"></ion-input>
+</ion-item>
+<ion-item *ngIf = "formulario.get('usuarioID').hasError('required') && (formulario.get('usuarioID').touched||crear)" no-lines>
+  <ion-label color= "danger">Campo obligatorio</ion-label>
+</ion-item>
+<ion-card *ngIf = "crearV || actualizarV"> 
+<ion-item>
+  <ion-label floating color= "primary"> Nombre </ion-label>
+  <ion-input formControlName="nombre"></ion-input>
+</ion-item>
+<ion-item *ngIf = "formulario.get('nombre').hasError('required') && (formulario.get('nombre').touched||crear)" no-lines>
+  <ion-label color= "danger">Campo obligatorio</ion-label>
+</ion-item>    
+<ion-item *ngIf = "formulario.get('nombre').hasError('maxlength') && crear" no-lines>
+  <ion-label color= "danger">Maximo 50 caracteres</ion-label>
+</ion-item> 
+<ion-item>
+  <ion-label floating color= "primary">E-mail</ion-label>
+  <ion-input formControlName="email" ></ion-input>
+</ion-item>
+<ion-item *ngIf = "formulario.get('email').hasError('required') && (formulario.get('email').touched||crear)" no-lines>
+  <ion-label color= "danger">Campo obligatorio</ion-label>
+</ion-item>  
+<ion-item *ngIf = "formulario.get('email').hasError('email') && crear" no-lines>
+  <ion-label color= "danger">Formato incorrecto</ion-label>
+</ion-item> 
+
+<ion-item>
+  <ion-label floating color= "primary">Contraseña</ion-label>
+  <ion-input formControlName="contraseña" type="password"></ion-input>
+</ion-item>
+<ion-item *ngIf = "formulario.get('contraseña').hasError('required') && (formulario.get('contraseña').touched||crear)" no-lines>
+  <ion-label color= "danger">Campo obligatorio</ion-label>
+</ion-item>   
+<ion-item *ngIf = "formulario.get('contraseña').hasError('maxlength') && crear" no-lines>
+  <ion-label color= "danger">Maximo 30 caracteres</ion-label>
+</ion-item>  
+<ion-item *ngIf="formulario.get('contraseña').hasError('pattern') && (formulario.get('contraseña').touched||crear)" no-lines>
+  <ion-label color= "danger">Minimo un digito y un carcater especial </ion-label>
+</ion-item>  
+<ion-item *ngIf = "formulario.get('contraseña').hasError('minlength') && crear" no-lines>
+  <ion-label color= "danger">Minimo 8 caracteres</ion-label> 
+</ion-item>
+<ion-item>
+  <ion-label floating color= "primary">Usuario</ion-label>
+  <ion-input formControlName="usuario"></ion-input>
+</ion-item>
+<ion-item *ngIf = "formulario.get('usuario').hasError('minlength') && crear" no-lines>
+  <ion-label color= "danger">Minimo 6 caracteres</ion-label> 
+</ion-item>
+<ion-item *ngIf = "formulario.get('usuario').hasError('required') && (formulario.get('usuario').touched||crear)" no-lines>
+  <ion-label color= "danger">Campo obligatorio</ion-label>
+</ion-item> 
+<ion-item *ngIf = "formulario.get('usuario').hasError('maxlength') && crear" no-lines>
+  <ion-label color= "danger">Maximo 30 caracteres</ion-label>
+</ion-item>  
+<ion-item *ngIf="formulario.get('usuario').hasError('pattern') && (formulario.get('usuario').touched||crear)" no-lines>
+  <ion-label color= "danger">Solo minusculas </ion-label>  
+</ion-item> 
+<ion-item>
+     <ion-label color= "primary">Ingresa tu fecha de nacimiento</ion-label>
+     <ion-datetime placeholder = "Fecha de nacimiento" formControlName = "fecNac" (ionCancel) = "enCancelar()" dateFormat = "DD MM YYYY" [class.invalid] = "!formulario.valid">   
+     </ion-datetime>  
+</ion-item>
+<ion-item *ngIf = "(crear || dateError) && formulario.controls.fecNac.invalid">
+    <p color= "danger"> Ingresa una fecha correcta </p>
+  </ion-item>
+</ion-card>
+<ion-card>
+<ion-item *ngIf="buscarV">
+  <ion-label color= "primary">Aqui van los resultados de la busqueda </ion-label>  
+</ion-item> 
+</ion-card>
+</ion-list>
+ <ion-fab *ngIf="crearV" center style = "text-align: center;" >
+    <button ion-fab (click) = "click()" >  Crear
+    </button>
+  </ion-fab>
+ <ion-fab *ngIf="eliminarV" center style = "text-align: center;" >
+    <button ion-fab (click) = "clickE()" >  Eliminar
+    </button>
+  </ion-fab>
+ <ion-fab *ngIf="buscarV" center style = "text-align: center;" >
+    <button ion-fab (click) = "clickB()" >  Buscar
+    </button>
+  </ion-fab>
+ <ion-fab *ngIf="actualizarV" center style = "text-align: center; size: 100px;" >
+    <button ion-fab (click) = "clickA()" >  Actualizar
+    </button>
+  </ion-fab>      
+</form>
 </ion-content>
